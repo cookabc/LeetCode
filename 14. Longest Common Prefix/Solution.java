@@ -11,12 +11,11 @@ public class Solution {
 
     public static String longestCommonPrefix(String[] strs) {
         StringBuilder result = new StringBuilder();
-        Arrays.sort(strs, Comparator.comparing(String::length));
         String base = strs[0];
         for (int i = 0; i < base.length(); i++) {
             boolean appendable = true;
             for (String str : strs) {
-                if (str.charAt(i) != base.charAt(i)) {
+                if (str.length() <= i || str.charAt(i) != base.charAt(i)) {
                     appendable = false;
                     break;
                 }
