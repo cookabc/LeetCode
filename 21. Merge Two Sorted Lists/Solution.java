@@ -27,24 +27,28 @@ public class Solution {
     }
 
     public static ListNode mergeTwoLists(ListNode list1, ListNode list2) {
-        List<Integer> valueList1 = getValues(list1);
-        List<Integer> valueList2 = getValues(list2);
-        valueList1.addAll(valueList2);
-        List<Integer> allValueList = valueList1.stream().sorted().toList();
-
-        return convert(allValueList);
+        if (list1 == null && list2 == null) {
+            return null;
+        }
+        if (list1 == null) {
+            return list2;
+        }
+        if (list2 == null) {
+            return list1;
+        }
+        if (list1.val <= list2.val) {
+            return new ListNode(list1.val, mergeTwoLists(list1.next, list2));
+        } else {
+            return new ListNode(list2.val, mergeTwoLists(list1, list2.next));
+        }
     }
 
-    private static List<Integer> getValues(ListNode listNode) {
-        List<Integer> result = new ArrayList<>();
-        if (listNode == null) {
-            return result;
-        }
-        result.add(listNode.val);
-        if (listNode.next != null) {
-            result.addAll(getValues(listNode.next));
-        }
-        return result;
+    public static void main(String[] args) {
+        printList(mergeTwoLists(convert(List.of(1, 2, 4)), convert(List.of(1, 3, 4))));
+        System.out.println("------");
+        printList(mergeTwoLists(convert(List.of()), convert(List.of())));
+        System.out.println("------");
+        printList(mergeTwoLists(convert(List.of()), new ListNode(0)));
     }
 
     private static ListNode convert(List<Integer> list) {
@@ -56,14 +60,6 @@ public class Solution {
             return new ListNode(list.get(0));
         }
         return new ListNode(list.get(0), convert(subList));
-    }
-
-    public static void main(String[] args) {
-        printList(mergeTwoLists(convert(List.of(1, 2, 4)), convert(List.of(1, 3, 4))));
-        System.out.println("------");
-        printList(mergeTwoLists(convert(List.of()), convert(List.of())));
-        System.out.println("------");
-        printList(mergeTwoLists(convert(List.of()), new ListNode(0)));
     }
 
     private static void printList(ListNode listNode) {
