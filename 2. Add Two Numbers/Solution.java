@@ -30,19 +30,14 @@ public class Solution {
             return null;
         }
         if (l1 == null) {
-            if (l2.val == 10) {
-                return new ListNode(0, addTwoNumbers(new ListNode(1), l2.next));
-            }
-            return l2;
+            l1 = l2;
+            l2 = new ListNode();
         }
         if (l2 == null) {
-            if (l1.val == 10) {
-                return new ListNode(0, addTwoNumbers(new ListNode(1), l1.next));
-            }
-            return l1;
+            l2 = new ListNode();
         }
         int sum = l1.val + l2.val;
-        if (sum / 10 == 1) {
+        if (sum >= 10) {
             if (l1.next != null) {
                 l1.next.val += 1;
             } else {
