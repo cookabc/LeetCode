@@ -26,25 +26,35 @@ public class Solution {
     }
 
     public static ListNode addTwoNumbers(ListNode l1, ListNode l2) {
-        if (l1 == null && l2 == null) {
-            return null;
-        }
-        if (l1 == null) {
-            l1 = l2;
-            l2 = new ListNode();
-        }
-        if (l2 == null) {
-            l2 = new ListNode();
-        }
-        int sum = l1.val + l2.val;
-        if (sum >= 10) {
-            if (l1.next != null) {
-                l1.next.val += 1;
+        int carry = 0;
+        ListNode result = new ListNode();
+        ListNode curr = null;
+        while (l1 != null || l2 != null || carry != 0) {
+            int num1 = 0;
+            int num2 = 0;
+            if (l1 != null) {
+                num1 = l1.val;
+                l1 = l1.next;
+            }
+            if (l2 != null) {
+                num2 = l2.val;
+                l2 = l2.next;
+            }
+            int sum = num1 + num2 + carry;
+            carry = sum / 10;
+            if (curr == null) {
+                result.val = sum % 10;
+                result.next = null;
+                curr = result;
             } else {
-                l1.next = new ListNode(1);
+                ListNode temp = new ListNode();
+                temp.val = sum % 10;
+                temp.next = null;
+                curr.next = temp;
+                curr = curr.next;
             }
         }
-        return new ListNode(sum % 10, addTwoNumbers(l1.next, l2.next));
+        return result;
     }
 
     public static void main(String[] args) {
