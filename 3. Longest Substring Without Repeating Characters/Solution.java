@@ -1,6 +1,3 @@
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Solution
  *
@@ -10,19 +7,22 @@ import java.util.List;
 public class Solution {
 
     public static int lengthOfLongestSubstring(String s) {
-        int result = 0;
-        List<Character> resultList = new ArrayList<>();
-        for (char c : s.toCharArray()) {
-            int checkIndex = resultList.indexOf(c);
-            int resultLength = resultList.size();
-            if (checkIndex != -1) {
-                result = Math.max(result, resultLength);
-                resultList = resultList.subList(checkIndex + 1, resultLength);
-            }
-            resultList.add(c);
+        if (s.length() < 2) {
+            return s.length();
         }
-        result = Math.max(result, resultList.size());
-        return result;
+
+        StringBuilder resultStr = new StringBuilder();
+        int resultLength = resultStr.length();
+        for (char c : s.toCharArray()) {
+            String current = String.valueOf(c);
+            if (resultStr.toString().contains(current)) {
+                resultStr = new StringBuilder(resultStr.substring(resultStr.indexOf(current) + 1));
+            }
+            resultStr.append(c);
+            resultLength = Math.max(resultStr.length(), resultLength);
+        }
+
+        return resultLength;
     }
 
     public static void main(String[] args) {
