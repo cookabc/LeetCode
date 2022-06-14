@@ -1,7 +1,4 @@
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Solution
@@ -12,21 +9,18 @@ import java.util.stream.Collectors;
 public class Solution {
 
     public static int minimumTotal(List<List<Integer>> triangle) {
-        List<Integer> reduceList = new ArrayList<>(Collections.nCopies(triangle.get(triangle.size() - 1).size(), 0));
-
-        for (int j = triangle.size() - 1; j >= 0; j--) {
-            List<Integer> rowList = triangle.get(j);
-            if (rowList.size() == 1) {
-                return rowList.get(0) + reduceList.get(0);
-            }
-            List<Integer> newRowList = new ArrayList<>();
-            for (int i = 0; i < rowList.size() - 1; i++) {
-                newRowList.add(Math.min(rowList.get(i) + reduceList.get(i), rowList.get(i + 1) + reduceList.get(i + 1)));
-            }
-            reduceList = newRowList;
+        int n = triangle.size();
+        int[] dp = new int[n];
+        for (int i = 0; i < n; i++) {
+            dp[i] = triangle.get(n - 1).get(i);
         }
-
-        return reduceList.get(0);
+        for (int i = n - 2; i >= 0; i--) {
+            List<Integer> list = triangle.get(i);
+            for (int j = 0; j <= i; j++) {
+                dp[j] = Math.min(dp[j], dp[j + 1]) + list.get(j);
+            }
+        }
+        return dp[0];
     }
 
     public static void main(String[] args) {
