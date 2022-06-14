@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -10,26 +12,21 @@ import java.util.stream.Collectors;
 public class Solution {
 
     public static int minimumTotal(List<List<Integer>> triangle) {
-        int firstElement = triangle.get(0).get(0);
-        if (triangle.size() == 1) {
-            return firstElement;
+        List<Integer> reduceList = new ArrayList<>(Collections.nCopies(triangle.get(triangle.size() - 1).size(), 0));
+
+        for (int j = triangle.size() - 1; j >= 0; j--) {
+            List<Integer> rowList = triangle.get(j);
+            if (rowList.size() == 1) {
+                return rowList.get(0) + reduceList.get(0);
+            }
+            List<Integer> newRowList = new ArrayList<>();
+            for (int i = 0; i < rowList.size() - 1; i++) {
+                newRowList.add(Math.min(rowList.get(i) + reduceList.get(i), rowList.get(i + 1) + reduceList.get(i + 1)));
+            }
+            reduceList = newRowList;
         }
 
-        triangle = triangle.subList(1, triangle.size());
-
-        List<List<Integer>> leftSubTriangle = triangle.stream()
-                .map(rowList -> rowList.subList(0, rowList.size() - 1))
-                .filter(rowList -> rowList.size() > 0)
-                .collect(Collectors.toList());
-        List<List<Integer>> rightSubTriangle = triangle.stream()
-                .map(rowList -> rowList.subList(1, rowList.size()))
-                .filter(rowList -> rowList.size() > 0)
-                .collect(Collectors.toList());
-
-        int leftSubValue = minimumTotal(leftSubTriangle);
-        int rightSubValue = minimumTotal(rightSubTriangle);
-
-        return firstElement + Math.min(leftSubValue, rightSubValue);
+        return reduceList.get(0);
     }
 
     public static void main(String[] args) {
