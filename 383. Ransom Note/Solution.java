@@ -13,12 +13,12 @@ public class Solution {
         if (ransomNote.length() > magazine.length()) {
             return false;
         }
-        Map<Character, Integer> ransomCharCountMap = getCharCountMap(ransomNote);
         Map<Character, Integer> magazineCharCountMap = getCharCountMap(magazine);
-        for (char c : ransomCharCountMap.keySet()) {
-            if (ransomCharCountMap.get(c) > magazineCharCountMap.getOrDefault(c, 0)) {
+        for (char c : ransomNote.toCharArray()) {
+            if (magazineCharCountMap.getOrDefault(c, 0) == 0) {
                 return false;
             }
+            magazineCharCountMap.put(c, magazineCharCountMap.get(c) - 1);
         }
         return true;
     }
