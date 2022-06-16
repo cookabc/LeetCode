@@ -27,43 +27,35 @@ public class Solution {
     }
 
     public static boolean isPalindrome(ListNode head) {
-        // Find the end of first half and reverse second half.
-        ListNode firstHalfEnd = endOfFirstHalf(head);
-        ListNode secondHalfStart = reverseList(firstHalfEnd.next);
-
-        // Check whether there is a palindrome.
-        ListNode p1 = head;
-        ListNode p2 = secondHalfStart;
-        while (p2 != null) {
-            if (p1.val != p2.val) {
-                return false;
-            }
-            p1 = p1.next;
-            p2 = p2.next;
+        if (head == null || head.next == null) {
+            return true;
         }
-
-        // Restore the list and return the result.
-        return true;
-    }
-
-    private static ListNode endOfFirstHalf(ListNode head) {
-        ListNode fast = head;
+        ListNode fast = head.next;
         ListNode slow = head;
-        while (fast.next != null && fast.next.next != null) {
+        while (fast != null && fast.next != null) {
             fast = fast.next.next;
             slow = slow.next;
         }
-        return slow;
+        slow = reverse(slow);
+        while (head != null && slow != null) {
+            if (head.val != slow.val) {
+                return false;
+            }
+            head = head.next;
+            slow = slow.next;
+        }
+        return true;
     }
 
-    private static ListNode reverseList(ListNode head) {
+    private ListNode static reverse(ListNode head) {
         ListNode prev = null;
         ListNode curr = head;
+
         while (curr != null) {
-            ListNode nextTemp = curr.next;
+            ListNode tmpNext = curr.next;
             curr.next = prev;
             prev = curr;
-            curr = nextTemp;
+            curr = tmpNext;
         }
         return prev;
     }
