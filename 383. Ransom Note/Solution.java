@@ -1,5 +1,8 @@
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Solution
@@ -10,25 +13,17 @@ import java.util.Map;
 public class Solution {
 
     public static boolean canConstruct(String ransomNote, String magazine) {
-        if (ransomNote.length() > magazine.length()) {
-            return false;
+        int[] alphabet = new int[26];
+        for (int i = 0; i < magazine.length(); i++) {
+            alphabet[magazine.charAt(i) - 'a'] += 1;
         }
-        Map<Character, Integer> magazineCharCountMap = getCharCountMap(magazine);
-        for (char c : ransomNote.toCharArray()) {
-            if (magazineCharCountMap.getOrDefault(c, 0) == 0) {
+        for (int j = 0; j < ransomNote.length(); j++) {
+            alphabet[ransomNote.charAt(j) - 'a'] -= 1;
+            if (alphabet[ransomNote.charAt(j) - 'a'] < 0) {
                 return false;
             }
-            magazineCharCountMap.put(c, magazineCharCountMap.get(c) - 1);
         }
         return true;
-    }
-
-    private static Map<Character, Integer> getCharCountMap(String str) {
-        Map<Character, Integer> charCountMap = new HashMap<>();
-        for (char c : str.toCharArray()) {
-            charCountMap.put(c, charCountMap.getOrDefault(c, 0) + 1);
-        }
-        return charCountMap;
     }
 
     public static void main(String[] args) {
