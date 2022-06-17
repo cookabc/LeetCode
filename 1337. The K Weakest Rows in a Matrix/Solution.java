@@ -1,7 +1,4 @@
 import java.util.Arrays;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Solution
@@ -12,20 +9,20 @@ import java.util.Map;
 public class Solution {
 
     public static int[] kWeakestRows(int[][] mat, int k) {
-        Map<Integer, Integer> indexMap = new HashMap<>(mat.length);
-        for (int i = 0; i < mat.length; i++) {
-            int sum = 0;
-            for (int j = 0; j < mat[i].length; j++) {
-                sum += mat[i][j];
+        int y = mat.length, x = mat[0].length, idx = 0;
+        int[] row = new int[y], result = new int[k];
+        for (int j = 0; j <= x; j++) {
+            for (int i = 0; i < y; i++) {
+                if (row[i] == 0 && (j == x || mat[i][j] == 0)) {
+                    result[idx++] = i;
+                    row[i]++;
+                }
+                if (idx == k) {
+                    return result;
+                }
             }
-            indexMap.put(i, sum);
         }
-        return indexMap.entrySet().stream()
-                .sorted(Comparator.comparingInt(Map.Entry::getValue))
-                .limit(k)
-                .map(Map.Entry::getKey)
-                .mapToInt(Integer::intValue)
-                .toArray();
+        return result;
     }
 
     public static void main(String[] args) {
@@ -44,5 +41,19 @@ public class Solution {
                 {1, 0, 0, 0}
         };
         System.out.println(Arrays.toString(kWeakestRows(a2, 2)));
+        int[][] a3 = {
+                {1, 1, 1, 1, 1, 1},
+                {1, 1, 1, 1, 1, 1},
+                {1, 1, 1, 1, 1, 1},
+                {1, 1, 1, 1, 1, 1}
+        };
+        System.out.println(Arrays.toString(kWeakestRows(a3, 1)));
+        int[][] a4 = {
+                {1, 0},
+                {1, 0},
+                {1, 0},
+                {1, 1}
+        };
+        System.out.println(Arrays.toString(kWeakestRows(a4, 4)));
     }
 }
