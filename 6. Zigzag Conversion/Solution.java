@@ -1,3 +1,7 @@
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 /**
  * Solution
  *
@@ -20,33 +24,26 @@ public class Solution {
         if (numRows <= 1) {
             return s;
         }
-        char[][] result = new char[numRows][s.length()];
-        int maxRowIndex = numRows - 1;
-        int roundLength = maxRowIndex * 2;
-        int direction = 1;
-        int rowIndex = 0;
+        List<List<Character>> result = new ArrayList<>(numRows);
+        for (int i = 0; i < numRows; i++) {
+            result.add(new ArrayList<>());
+        }
+        int roundLength = 2 * (numRows - 1);
         for (int i = 0; i < s.length(); i++) {
-            int round = i / roundLength;
-            if (direction == 1) {
-                result[rowIndex][round * 2] = s.charAt(i);
-                rowIndex++;
+            if (i % roundLength == 0) {
+                result.get(0).add(s.charAt(i));
+            } else if (i % roundLength == roundLength / 2) {
+                result.get(numRows - 1).add(s.charAt(i));
             } else {
-                result[rowIndex][round * 2 + 1] = s.charAt(i);
-                rowIndex--;
-            }
-            if (rowIndex == 0 || rowIndex == maxRowIndex) {
-                direction = -direction;
-            }
-        }
-        StringBuilder sb = new StringBuilder();
-        for (char[] chars : result) {
-            for (char aChar : chars) {
-                if (Character.isLetter(aChar) || aChar == '.' || aChar == ',') {
-                    sb.append(aChar);
+                int index = i % roundLength;
+                if (index > roundLength / 2) {
+                    index = roundLength - index;
                 }
+                result.get(index).add(s.charAt(i));
             }
         }
-        return sb.toString();
+
+        return result.stream().flatMap(List::stream).map(Object::toString).collect(Collectors.joining());
     }
 
     public static void main(String[] args) {
