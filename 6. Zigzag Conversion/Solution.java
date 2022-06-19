@@ -1,6 +1,5 @@
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Solution
@@ -24,26 +23,27 @@ public class Solution {
         if (numRows <= 1) {
             return s;
         }
-        List<List<Character>> result = new ArrayList<>(numRows);
-        for (int i = 0; i < numRows; i++) {
-            result.add(new ArrayList<>());
-        }
-        int roundLength = 2 * (numRows - 1);
-        for (int i = 0; i < s.length(); i++) {
-            if (i % roundLength == 0) {
-                result.get(0).add(s.charAt(i));
-            } else if (i % roundLength == roundLength / 2) {
-                result.get(numRows - 1).add(s.charAt(i));
-            } else {
-                int index = i % roundLength;
-                if (index > roundLength / 2) {
-                    index = roundLength - index;
-                }
-                result.get(index).add(s.charAt(i));
-            }
+        List<StringBuilder> rows = new ArrayList<>();
+        for (int i = 0; i < Math.min(numRows, s.length()); i++) {
+            rows.add(new StringBuilder());
         }
 
-        return result.stream().flatMap(List::stream).map(Object::toString).collect(Collectors.joining());
+        int curRow = 0;
+        boolean goingDown = false;
+
+        for (char c : s.toCharArray()) {
+            rows.get(curRow).append(c);
+            if (curRow == 0 || curRow == numRows - 1) {
+                goingDown = !goingDown;
+            }
+            curRow += goingDown ? 1 : -1;
+        }
+
+        StringBuilder ret = new StringBuilder();
+        for (StringBuilder row : rows) {
+            ret.append(row);
+        }
+        return ret.toString();
     }
 
     public static void main(String[] args) {
