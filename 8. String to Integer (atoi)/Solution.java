@@ -7,38 +7,42 @@
 public class Solution {
 
     public static int myAtoi(String s) {
-        boolean started = false;
-        int negative = 1;
+        int sign = 1;
         int result = 0;
-        for (char c : s.toCharArray()) {
-            if (!started) {
-                if (c == ' ') {
-                    continue;
-                } else if (c == '+') {
-                    started = true;
-                } else if (c == '-') {
-                    negative = -1;
-                    started = true;
-                } else if ((c >= 48 & c <= 57)) {
-                    result = (c - 48) * negative;
-                    started = true;
-                } else {
-                    break;
-                }
-            } else if (c >= 48 & c <= 57) {
-                int pop = (c - 48) * negative;
-                if (result > Integer.MAX_VALUE / 10 || (result == Integer.MAX_VALUE / 10 && pop > 7)) {
-                    return Integer.MAX_VALUE;
-                }
-                if (result < Integer.MIN_VALUE / 10 || (result == Integer.MIN_VALUE / 10 && pop < -8)) {
-                    return Integer.MIN_VALUE;
-                }
-                result = result * 10 + pop;
-            } else {
-                break;
-            }
+        int index = 0;
+        int n = s.length();
+
+        // Discard all spaces from the beginning of the s string.
+        while (index < n && s.charAt(index) == ' ') {
+            index++;
         }
-        return result;
+
+        // sign = +1, if it's positive number, otherwise sign = -1. 
+        if (index < n && s.charAt(index) == '+') {
+            index++;
+        } else if (index < n && s.charAt(index) == '-') {
+            sign = -1;
+            index++;
+        }
+
+        // Traverse next digits of s and stop if it is not a digit
+        while (index < n && Character.isDigit(s.charAt(index))) {
+            int digit = s.charAt(index) - '0';
+
+            // Check overflow and underflow conditions. 
+            if ((result > Integer.MAX_VALUE / 10) || (result == Integer.MAX_VALUE / 10 && digit > Integer.MAX_VALUE % 10)) {
+                // If integer overflowed return 2^31-1, otherwise if underflow return -2^31.
+                return sign == 1 ? Integer.MAX_VALUE : Integer.MIN_VALUE;
+            }
+
+            // Append current digit to the result.
+            result = 10 * result + digit;
+            index++;
+        }
+
+        // We have formed a valid number without any overflow/underflow.
+        // Return it after multiplying it with its sign.
+        return sign * result;
     }
 
     public static void main(String[] args) {
