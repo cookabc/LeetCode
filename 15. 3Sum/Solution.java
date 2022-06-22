@@ -18,28 +18,23 @@ public class Solution {
         List<List<Integer>> result = new ArrayList<>();
         Arrays.sort(nums);
 
-        for (int num1Idx = 0; num1Idx < nums.length - 2; num1Idx++) {
-            if (num1Idx > 0 && nums[num1Idx] == nums[num1Idx - 1]) {
+        for (int i = 0; i < nums.length - 2; i++) {
+            if (i > 0 && nums[i] == nums[i - 1]) {
                 continue;
             }
-            int num2Idx = num1Idx + 1;
-            int num3Idx = nums.length - 1;
-            while (num2Idx < num3Idx) {
-                int sum = nums[num2Idx] + nums[num3Idx] + nums[num1Idx];
+            int start = i + 1, end = nums.length - 1;
+            while (start < end) {
+                int sum = nums[start] + nums[end] + nums[i];
                 if (sum == 0) {
-                    // Add triplet to result
-                    result.add(Arrays.asList(nums[num1Idx], nums[num2Idx], nums[num3Idx]));
-                    num3Idx--;
-                    // Skip all duplicates from right
-                    while (num2Idx < num3Idx && nums[num3Idx] == nums[num3Idx + 1]) {
-                        num3Idx--;
+                    result.add(Arrays.asList(nums[i], nums[start], nums[end]));
+                    end--;
+                    while (start < end && nums[end] == nums[end + 1]) {
+                        end--;
                     }
                 } else if (sum > 0) {
-                    // Decrement num3Idx to reduce sum value
-                    num3Idx--;
+                    end--;
                 } else {
-                    // Increment num2Idx to increase sum value
-                    num2Idx++;
+                    start++;
                 }
             }
         }
