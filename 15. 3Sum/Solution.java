@@ -1,6 +1,5 @@
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedHashSet;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -17,23 +16,35 @@ public class Solution {
         }
 
         List<List<Integer>> result = new ArrayList<>();
+        Arrays.sort(nums);
 
-        for (int i = 0; i < nums.length; i++) {
-            for (int j = i + 1; j < nums.length; j++) {
-                for (int k = j + 1; k < nums.length; k++) {
-                    if (nums[i] + nums[j] + nums[k] == 0) {
-                        List<Integer> triplet = new ArrayList<>();
-                        triplet.add(nums[i]);
-                        triplet.add(nums[j]);
-                        triplet.add(nums[k]);
-                        Collections.sort(triplet);
-                        result.add(triplet);
+        for (int num1Idx = 0; num1Idx < nums.length - 2; num1Idx++) {
+            if (num1Idx > 0 && nums[num1Idx] == nums[num1Idx - 1]) {
+                continue;
+            }
+            int num2Idx = num1Idx + 1;
+            int num3Idx = nums.length - 1;
+            while (num2Idx < num3Idx) {
+                int sum = nums[num2Idx] + nums[num3Idx] + nums[num1Idx];
+                if (sum == 0) {
+                    // Add triplet to result
+                    result.add(Arrays.asList(nums[num1Idx], nums[num2Idx], nums[num3Idx]));
+                    num3Idx--;
+                    // Skip all duplicates from right
+                    while (num2Idx < num3Idx && nums[num3Idx] == nums[num3Idx + 1]) {
+                        num3Idx--;
                     }
+                } else if (sum > 0) {
+                    // Decrement num3Idx to reduce sum value
+                    num3Idx--;
+                } else {
+                    // Increment num2Idx to increase sum value
+                    num2Idx++;
                 }
             }
         }
 
-        return new ArrayList<>(new LinkedHashSet<>(result));
+        return result;
     }
 
     public static void main(String[] args) {
