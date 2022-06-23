@@ -1,7 +1,5 @@
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Solution
@@ -12,21 +10,27 @@ import java.util.Set;
 public class Solution {
 
     public static List<String> generateParenthesis(int n) {
-        if (n == 1) {
-            return List.of("()");
+        List<String> result = new ArrayList<>();
+        backtrack(result, new StringBuilder(), 0, 0, n);
+        return result;
+    }
+
+    private static void backtrack(List<String> result, StringBuilder cur, int open, int close, int max) {
+        if (cur.length() == max * 2) {
+            result.add(cur.toString());
+            return;
         }
-        List<String> subParenthesis = generateParenthesis(n - 1);
-        Set<String> resultSet = new HashSet<>();
-        for (String s : subParenthesis) {
-            resultSet.add("()" + s);
-            resultSet.add(s + "()");
-            for (int i = 0; i < s.length(); i++) {
-                if (s.charAt(i) == '(') {
-                    resultSet.add(s.substring(0, i + 1) + "()" + s.substring(i + 1));
-                }
-            }
+
+        if (open < max) {
+            cur.append("(");
+            backtrack(result, cur, open + 1, close, max);
+            cur.deleteCharAt(cur.length() - 1);
         }
-        return new ArrayList<>(resultSet);
+        if (close < open) {
+            cur.append(")");
+            backtrack(result, cur, open, close + 1, max);
+            cur.deleteCharAt(cur.length() - 1);
+        }
     }
 
     public static void main(String[] args) {
