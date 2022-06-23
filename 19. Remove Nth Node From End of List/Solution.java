@@ -26,12 +26,12 @@ public class Solution {
     }
 
     public static ListNode removeNthFromEnd(ListNode head, int n) {
-        int sz = 1;
         if (head.next == null) {
             return null;
         }
 
         ListNode curr = head;
+        int sz = 1;
         while (curr.next != null) {
             curr = curr.next;
             sz++;
