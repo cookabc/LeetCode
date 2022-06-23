@@ -1,4 +1,3 @@
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -27,36 +26,23 @@ public class Solution {
     }
 
     public static ListNode removeNthFromEnd(ListNode head, int n) {
-        int sz = 1;
-        ListNode curr = head;
-        while (curr.next != null) {
-            curr = curr.next;
-            sz++;
+        ListNode dummy = new ListNode(0, head);
+        ListNode left = dummy;
+        ListNode right = head;
+
+        while (n > 0) {
+            right = right.next;
+            n--;
+        }
+        while (right != null) {
+            right = right.next;
+            left = left.next;
+        }
+        if (left != null && left.next != null) {
+            left.next = left.next.next;
         }
 
-        int targetPos = sz - n;
-        int currentPos = 0;
-        curr = head;
-        List<ListNode> nodeList = new ArrayList<>();
-        while (currentPos < targetPos && curr != null) {
-            currentPos++;
-            nodeList.add(new ListNode(curr.val));
-            curr = curr.next;
-        }
-        if (curr != null) {
-            curr = curr.next;
-        }
-        while (curr != null) {
-            nodeList.add(new ListNode(curr.val));
-            curr = curr.next;
-        }
-        if (nodeList.size() == 0) {
-            return null;
-        }
-        for (int i = 0; i < nodeList.size() - 1; i++) {
-            nodeList.get(i).next = nodeList.get(i + 1);
-        }
-        return nodeList.get(0);
+        return dummy.next;
     }
 
     public static void main(String[] args) {
