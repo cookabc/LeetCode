@@ -29,8 +29,15 @@ public class Solution {
         if (head.next == null) {
             return null;
         }
-
         ListNode curr = head;
+        if (n == 1) {
+            while (curr.next.next != null) {
+                curr = curr.next;
+            }
+            curr.next = null;
+            return head;
+        }
+
         int sz = 1;
         while (curr.next != null) {
             curr = curr.next;
