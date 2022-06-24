@@ -7,35 +7,31 @@
 public class Solution {
 
     public static int divide(int dividend, int divisor) {
-        if (dividend == 0) {
-            return 0;
+        // Check for overflow
+        if (divisor == 0 || (dividend == Integer.MIN_VALUE && divisor == -1)) {
+            return Integer.MAX_VALUE;
         }
-        if (divisor == 1) {
-            return dividend;
-        }
-        if (divisor == -1) {
-            if (dividend == Integer.MIN_VALUE) {
-                return Integer.MAX_VALUE;
-            }
-            return -dividend;
-        }
-
-        int result = 0;
+        // Sign of result
         int sign = dividend > 0 == divisor > 0 ? 1 : -1;
-        dividend = Math.abs(dividend);
-        divisor = Math.abs(divisor);
-        if (dividend == divisor) {
-            return sign;
-        }
-
-        for (int i = 0, val = divisor; dividend - divisor >= 0; i = 0, val = divisor) {
-            while (val > 0 && dividend - val >= 0) {
-                val = divisor << ++i;
+        // Quotient
+        int quotient = 0;
+        // Take the absolute value
+        long absoluteDividend = Math.abs((long) dividend);
+        long absoluteDivisor = Math.abs((long) divisor);
+        // Loop until the  dividend is greater than divisor
+        while (absoluteDividend >= absoluteDivisor) {
+            // This represents the number of bits shifted or
+            // how many times we can double the number
+            int shift = 0;
+            while (absoluteDividend >= (absoluteDivisor << shift)) {
+                shift++;
             }
-            dividend -= divisor << i - 1;
-            result += 1 << i - 1;
+            // Add the number of times we shifted to the quotient
+            quotient += (1 << (shift - 1));
+            // Update the dividend for the next iteration
+            absoluteDividend -= absoluteDivisor << (shift - 1);
         }
-        return sign < 0 ? -result : result;
+        return sign == -1 ? -quotient : quotient;
     }
 
     public static void main(String[] args) {
