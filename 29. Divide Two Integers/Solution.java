@@ -8,7 +8,7 @@ public class Solution {
 
     public static int divide(int dividend, int divisor) {
         // Check for overflow
-        if (divisor == 0 || (dividend == Integer.MIN_VALUE && divisor == -1)) {
+        if (dividend == Integer.MIN_VALUE && divisor == -1) {
             return Integer.MAX_VALUE;
         }
         // Sign of result
@@ -18,7 +18,7 @@ public class Solution {
         // Take the absolute value
         long absoluteDividend = Math.abs((long) dividend);
         long absoluteDivisor = Math.abs((long) divisor);
-        // Loop until the  dividend is greater than divisor
+        // Loop until the divisor is greater than dividend
         while (absoluteDividend >= absoluteDivisor) {
             // This represents the number of bits shifted or
             // how many times we can double the number
