@@ -16,17 +16,12 @@ public class Solution {
         if (nums[mid] == target) {
             return mid;
         } else {
-            if (nums[0] <= nums[mid - 1] && nums[0] <= target && target <= nums[mid - 1]) {
+            if ((nums[0] <= nums[mid - 1] && nums[0] <= target && target <= nums[mid - 1])
+                    || (nums[0] > nums[mid - 1] && (nums[0] <= target || target <= nums[mid - 1]))) {
                 return search(Arrays.copyOfRange(nums, 0, mid), target);
             }
-            if (nums[0] > nums[mid - 1] && (nums[0] <= target || target <= nums[mid - 1])) {
-                return search(Arrays.copyOfRange(nums, 0, mid), target);
-            }
-            if (nums[mid] <= nums[nums.length - 1] && nums[mid] <= target && target <= nums[nums.length - 1]) {
-                int result = search(Arrays.copyOfRange(nums, mid, nums.length), target);
-                return result == -1 ? -1 : result + mid;
-            }
-            if (nums[mid] > nums[nums.length - 1] && (nums[mid] <= target || target <= nums[nums.length - 1])) {
+            if ((nums[mid] <= nums[nums.length - 1] && nums[mid] <= target && target <= nums[nums.length - 1])
+                    || (nums[mid] > nums[nums.length - 1] && (nums[mid] <= target || target <= nums[nums.length - 1]))) {
                 int result = search(Arrays.copyOfRange(nums, mid, nums.length), target);
                 return result == -1 ? -1 : result + mid;
             }
