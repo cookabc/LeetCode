@@ -1,5 +1,3 @@
-import java.util.Arrays;
-
 /**
  * Solution
  *
@@ -9,21 +7,18 @@ import java.util.Arrays;
 public class Solution {
 
     public static int search(int[] nums, int target) {
-        if (nums.length == 1) {
-            return nums[0] == target ? 0 : -1;
-        }
-        int mid = nums.length / 2;
-        if (nums[mid] == target) {
-            return mid;
-        } else {
-            if ((nums[0] <= nums[mid - 1] && nums[0] <= target && target <= nums[mid - 1])
-                    || (nums[0] > nums[mid - 1] && (nums[0] <= target || target <= nums[mid - 1]))) {
-                return search(Arrays.copyOfRange(nums, 0, mid), target);
-            }
-            if ((nums[mid] <= nums[nums.length - 1] && nums[mid] <= target && target <= nums[nums.length - 1])
-                    || (nums[mid] > nums[nums.length - 1] && (nums[mid] <= target || target <= nums[nums.length - 1]))) {
-                int result = search(Arrays.copyOfRange(nums, mid, nums.length), target);
-                return result == -1 ? -1 : result + mid;
+        int left = 0, right = nums.length;
+        while (left < right) {
+            int mid = (left + right) / 2;
+            int num = (nums[mid] < nums[0]) == (target < nums[0])
+                    ? nums[mid]
+                    : target < nums[0] ? Integer.MIN_VALUE : Integer.MAX_VALUE;
+            if (num < target) {
+                left = mid + 1;
+            } else if (num > target) {
+                right = mid;
+            } else {
+                return mid;
             }
         }
         return -1;
