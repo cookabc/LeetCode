@@ -12,34 +12,37 @@ public class Solution {
         if (nums == null || nums.length == 0) {
             return new int[]{-1, -1};
         }
-        int start, end;
-        int mid = nums.length / 2;
-        if (nums[mid] > target) {
-            return searchRange(Arrays.copyOfRange(nums, 0, mid), target);
-        } else if (nums[mid] < target) {
-            int[] range = searchRange(Arrays.copyOfRange(nums, mid + 1, nums.length), target);
-            if (range[0] == -1) {
-                return new int[]{-1, -1};
+        int left = 0, right = nums.length;
+        boolean find = false;
+        while (left < right) {
+            int mid = (left + right) / 2;
+            if (nums[mid] < target) {
+                left = mid + 1;
+            } else if (nums[mid] > target) {
+                right = mid;
             } else {
-                return new int[]{mid + range[0] + 1, mid + range[1] + 1};
+                left = mid;
+                right = mid;
+                while (left > 0 && nums[left - 1] == target) {
+                    left--;
+                }
+                while (right < nums.length - 1 && nums[right + 1] == target) {
+                    right++;
+                }
+                find = true;
+                break;
             }
-        } else {
-            start = mid;
-            end = mid;
-            while (start > 0 && nums[start - 1] == target) {
-                start--;
-            }
-            while (end < nums.length - 1 && nums[end + 1] == target) {
-                end++;
-            }
-            return new int[]{start, end};
         }
+        return find ? new int[]{left, right} : new int[]{-1, -1};
     }
 
     public static void main(String[] args) {
+        System.out.println(Arrays.toString(searchRange(new int[]{}, 0)));
+        System.out.println(Arrays.toString(searchRange(new int[]{1, 2, 3}, 1)));
         System.out.println(Arrays.toString(searchRange(new int[]{1, 2, 3}, 3)));
-//        System.out.println(Arrays.toString(searchRange(new int[]{5, 7, 7, 8, 8, 10}, 8)));
-//        System.out.println(Arrays.toString(searchRange(new int[]{5, 7, 7, 8, 8, 10}, 6)));
-//        System.out.println(Arrays.toString(searchRange(new int[]{}, 0)));
+        System.out.println(Arrays.toString(searchRange(new int[]{1, 2, 3, 3}, 3)));
+        System.out.println(Arrays.toString(searchRange(new int[]{5, 7, 7, 8, 8, 10}, 8)));
+        System.out.println(Arrays.toString(searchRange(new int[]{5, 7, 7, 8, 8, 10}, 6)));
+        System.out.println(Arrays.toString(searchRange(new int[]{5, 7, 7, 8, 8, 10}, 11)));
     }
 }
