@@ -10,52 +10,35 @@ import java.util.Map;
 public class Solution {
 
     public static boolean isValidSudoku(char[][] board) {
-        for (char[] chars : board) {
-            Map<Character, Integer> checkMap = initCheckMap();
-            for (int j = 0; j < board.length; j++) {
-                if (chars[j] != '.') {
-                    checkMap.put(chars[j], checkMap.get(chars[j]) + 1);
-                }
-            }
-            if (checkMap.values().stream().anyMatch(i -> i > 1)) {
-                return false;
-            }
-        }
-        for (int j = 0; j < board.length; j++) {
-            Map<Character, Integer> checkMap = initCheckMap();
-            for (char[] chars : board) {
-                if (chars[j] != '.') {
-                    checkMap.put(chars[j], checkMap.get(chars[j]) + 1);
-                }
-            }
-            if (checkMap.values().stream().anyMatch(v -> v > 1)) {
-                return false;
-            }
-        }
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
-                Map<Character, Integer> checkMap = initCheckMap();
-                for (int k = 0; k < 3; k++) {
-                    for (int l = 0; l < 3; l++) {
-                        if (board[i * 3 + k][j * 3 + l] != '.') {
-                            checkMap.put(board[i * 3 + k][j * 3 + l], checkMap.get(board[i * 3 + k][j * 3 + l]) + 1);
-                        }
+        for (int i = 0; i < 9; i++) {
+            Map<Character, Integer> row = new HashMap<>();
+            Map<Character, Integer> col = new HashMap<>();
+            Map<Character, Integer> block = new HashMap<>();
+            for (int j = 0; j < 9; j++) {
+                char c = board[i][j];
+                if (c != '.') {
+                    if (row.containsKey(c)) {
+                        return false;
                     }
+                    row.put(c, 1);
                 }
-                if (checkMap.values().stream().anyMatch(v -> v > 1)) {
-                    return false;
+                c = board[j][i];
+                if (c != '.') {
+                    if (col.containsKey(c)) {
+                        return false;
+                    }
+                    col.put(c, 1);
+                }
+                c = board[3 * (i / 3) + j / 3][3 * (i % 3) + j % 3];
+                if (c != '.') {
+                    if (block.containsKey(c)) {
+                        return false;
+                    }
+                    block.put(c, 1);
                 }
             }
         }
         return true;
-    }
-
-    private static Map<Character, Integer> initCheckMap() {
-        Map<Character, Integer> checkMap = new HashMap<>(10);
-        for (int i = 48; i < 58; i++) {
-            checkMap.put((char) i, 0);
-        }
-        return checkMap;
     }
 
     public static void main(String[] args) {
