@@ -1,6 +1,3 @@
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * Solution
  *
@@ -10,31 +7,20 @@ import java.util.Map;
 public class Solution {
 
     public static boolean isValidSudoku(char[][] board) {
+        int[] row = new int[9];
+        int[] column = new int[9];
+        int[] block = new int[9];
+        int idx;
         for (int i = 0; i < 9; i++) {
-            Map<Character, Integer> row = new HashMap<>();
-            Map<Character, Integer> col = new HashMap<>();
-            Map<Character, Integer> block = new HashMap<>();
             for (int j = 0; j < 9; j++) {
-                char c = board[i][j];
-                if (c != '.') {
-                    if (row.containsKey(c)) {
+                if (board[i][j] != '.') {
+                    idx = 1 << (board[i][j] - '0');
+                    if ((column[i] & idx) > 0 || (row[j] & idx) > 0 || (block[(i / 3) * 3 + j / 3] & idx) > 0) {
                         return false;
                     }
-                    row.put(c, 1);
-                }
-                c = board[j][i];
-                if (c != '.') {
-                    if (col.containsKey(c)) {
-                        return false;
-                    }
-                    col.put(c, 1);
-                }
-                c = board[3 * (i / 3) + j / 3][3 * (i % 3) + j % 3];
-                if (c != '.') {
-                    if (block.containsKey(c)) {
-                        return false;
-                    }
-                    block.put(c, 1);
+                    column[i] |= idx;
+                    row[j] |= idx;
+                    block[(i / 3) * 3 + j / 3] |= idx;
                 }
             }
         }
