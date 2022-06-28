@@ -12,14 +12,18 @@ public class Solution {
         }
         StringBuilder result = new StringBuilder();
         String prev = countAndSay(n - 1);
-        for (int i = 0; i < prev.length(); i++) {
-            int count = 1;
-            while (i + 1 < prev.length() && prev.charAt(i) == prev.charAt(i + 1)) {
+        int count = 1;
+        int i = 0;
+        while (i + 1 < prev.length()) {
+            if (prev.charAt(i) == prev.charAt(i + 1)) {
                 count++;
-                i++;
+            } else {
+                result.append(count).append(prev.charAt(i));
+                count = 1;
             }
-            result.append(count).append(prev.charAt(i));
+            i++;
         }
+        result.append(count).append(prev.charAt(i));
         return result.toString();
     }
 
