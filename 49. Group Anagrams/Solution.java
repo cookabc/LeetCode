@@ -12,16 +12,15 @@ public class Solution {
         if (strs.length == 1) {
             return List.of(List.of(strs));
         }
-        Map<String, ArrayList<String>> resultMap = new HashMap<>();
+        Map<String, List<String>> resultMap = new HashMap<>();
         for (String str : strs) {
             char[] chars = str.toCharArray();
             Arrays.sort(chars);
             String key = new String(chars);
-            if (resultMap.containsKey(key)) {
-                resultMap.get(key).add(str);
-            } else {
-                resultMap.put(key, new ArrayList<>(List.of(str)));
+            if (!resultMap.containsKey(key)) {
+                resultMap.put(key, new ArrayList<>());
             }
+            resultMap.get(key).add(str);
         }
         return new ArrayList<>(resultMap.values());
     }
