@@ -13,14 +13,21 @@ public class Solution {
             return List.of(List.of(strs));
         }
         Map<String, List<String>> resultMap = new HashMap<>();
-        for (String str : strs) {
-            char[] chars = str.toCharArray();
-            Arrays.sort(chars);
-            String key = new String(chars);
+        int[] count = new int[26];
+        for (String s : strs) {
+            Arrays.fill(count, 0);
+            for (char c : s.toCharArray()) count[c - 'a']++;
+
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < 26; i++) {
+                sb.append('#');
+                sb.append(count[i]);
+            }
+            String key = sb.toString();
             if (!resultMap.containsKey(key)) {
                 resultMap.put(key, new ArrayList<>());
             }
-            resultMap.get(key).add(str);
+            resultMap.get(key).add(s);
         }
         return new ArrayList<>(resultMap.values());
     }
