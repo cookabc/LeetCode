@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -11,19 +10,26 @@ import java.util.List;
 public class Solution {
 
     public static List<List<Integer>> permute(int[] nums) {
-        if (nums.length == 1) {
-            return List.of(List.of(nums[0]));
-        }
         List<List<Integer>> result = new ArrayList<>();
-        List<List<Integer>> pre = permute(Arrays.copyOfRange(nums, 1, nums.length));
-        for (List<Integer> integers : pre) {
-            for (int j = 0; j <= integers.size(); j++) {
-                List<Integer> temp = new ArrayList<>(integers);
-                temp.add(j, nums[0]);
-                result.add(temp);
-            }
-        }
+        permute(nums, result, new ArrayList<>(), new boolean[nums.length]);
         return result;
+    }
+
+    private static void permute(int[] nums, List<List<Integer>> result, List<Integer> iterList, boolean[] used) {
+        if (iterList.size() == nums.length) {
+            result.add(new ArrayList<>(iterList));
+            return;
+        }
+        for (int i = 0; i < nums.length; i++) {
+            if (used[i]) {
+                continue;
+            }
+            iterList.add(nums[i]);
+            used[i] = true;
+            permute(nums, result, iterList, used);
+            used[i] = false;
+            iterList.remove(iterList.size() - 1);
+        }
     }
 
     public static void main(String[] args) {
