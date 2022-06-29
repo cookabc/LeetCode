@@ -1,4 +1,7 @@
-import java.util.*;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Solution
@@ -13,23 +16,18 @@ public class Solution {
             return List.of(List.of(strs));
         }
         Map<String, List<String>> resultMap = new HashMap<>();
-        int[] count = new int[26];
         for (String s : strs) {
-            Arrays.fill(count, 0);
-            for (char c : s.toCharArray()) count[c - 'a']++;
-
-            StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < 26; i++) {
-                sb.append('#');
-                sb.append(count[i]);
+            char[] count = new char[26];
+            for (int i = 0; i < s.length(); i++) {
+                count[s.charAt(i) - 'a']++;
             }
-            String key = sb.toString();
+            String key = new String(count);
             if (!resultMap.containsKey(key)) {
-                resultMap.put(key, new ArrayList<>());
+                resultMap.put(key, new LinkedList<>());
             }
             resultMap.get(key).add(s);
         }
-        return new ArrayList<>(resultMap.values());
+        return new LinkedList<>(resultMap.values());
     }
 
     public static void main(String[] args) {
