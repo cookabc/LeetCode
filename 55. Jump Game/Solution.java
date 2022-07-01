@@ -7,26 +7,14 @@
 public class Solution {
 
     public static boolean canJump(int[] nums) {
-        if (nums.length == 1) {
-            return true;
-        }
-        boolean result = true;
-        for (int i = 0; i < nums.length; i++) {
-            if (!result) {
+        int max = 0;
+        for (int i = 0; i < nums.length; ++i) {
+            if (i > max) {
                 return false;
             }
-            if (nums[i] > 0) {
-                continue;
-            }
-            result = false;
-            for (int j = 0; j < i; j++) {
-                if (nums[j] + j > i || nums[j] + j == nums.length - 1) {
-                    result = true;
-                    break;
-                }
-            }
+            max = Math.max(max, i + nums[i]);
         }
-        return result;
+        return true;
     }
 
     public static void main(String[] args) {
