@@ -13,6 +13,9 @@ public class Solution {
                 return false;
             }
             max = Math.max(max, i + nums[i]);
+            if (max >= nums.length - 1) {
+                return true;
+            }
         }
         return true;
     }
