@@ -1,7 +1,6 @@
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
-import java.util.List;
+import java.util.LinkedList;
 
 /**
  * Solution
@@ -13,23 +12,15 @@ public class Solution {
 
     public static int[][] merge(int[][] intervals) {
         Arrays.sort(intervals, Comparator.comparingInt(a -> a[0]));
-        List<int[]> list = new ArrayList<>();
-        int[] current = intervals[0];
-        for (int i = 1; i < intervals.length; i++) {
-            if (current[1] < intervals[i][0]) {
-                list.add(current);
-                current = intervals[i];
+        LinkedList<int[]> result = new LinkedList<>();
+        for (int[] interval : intervals) {
+            if (result.isEmpty() || result.getLast()[1] < interval[0]) {
+                result.add(interval);
             } else {
-                current[0] = Math.min(current[0], intervals[i][0]);
-                current[1] = Math.max(current[1], intervals[i][1]);
+                result.getLast()[1] = Math.max(result.getLast()[1], interval[1]);
             }
         }
-        list.add(current);
-        int[][] result = new int[list.size()][2];
-        for (int i = 0; i < list.size(); i++) {
-            result[i] = list.get(i);
-        }
-        return result;
+        return result.toArray(new int[result.size()][]);
     }
 
     public static void main(String[] args) {
