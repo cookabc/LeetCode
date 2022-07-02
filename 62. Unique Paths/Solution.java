@@ -20,7 +20,7 @@ public class Solution {
         }
         long result = 1;
         int j = 1;
-        // Instead of taking factorial, keep on multiply & divide
+        // Use combination, start from (m + 1)
         for (int i = m + 1; i <= m + n; i++, j++) {
             result *= i;
             result /= j;
