@@ -10,11 +10,22 @@ public class Solution {
         if (m == 1 || n == 1) {
             return 1;
         }
-        int count = 0;
-        for (int i = 0; i < m; i++) {
-            count += uniquePaths(m - i, n - 1);
+        m--;
+        n--;
+        // Swap, so that m is the bigger number
+        if (m < n) {
+            m = m + n;
+            n = m - n;
+            m = m - n;
         }
-        return count;
+        long result = 1;
+        int j = 1;
+        // Instead of taking factorial, keep on multiply & divide
+        for (int i = m + 1; i <= m + n; i++, j++) {
+            result *= i;
+            result /= j;
+        }
+        return (int) result;
     }
 
     public static void main(String[] args) {
