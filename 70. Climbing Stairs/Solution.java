@@ -17,5 +17,6 @@ public class Solution {
         System.out.println(climbStairs(2));
         System.out.println(climbStairs(3));
         System.out.println(climbStairs(4));
+        System.out.println(climbStairs(45));
     }
 }
