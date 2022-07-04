@@ -1,6 +1,3 @@
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * Solution
  *
@@ -10,25 +7,27 @@ import java.util.Map;
 public class Solution {
 
     public static void sortColors(int[] nums) {
-        Map<Integer, Integer> countMap = new HashMap<>(3);
-        countMap.put(0, 0);
-        countMap.put(1, 0);
-        countMap.put(2, 0);
-        for (int num : nums) {
-            countMap.put(num, countMap.get(num) + 1);
-        }
-        for (int i = 0; i < nums.length; i++) {
-            if (countMap.get(0) > 0) {
-                nums[i] = 0;
-                countMap.put(0, countMap.get(0) - 1);
-            } else if (countMap.get(1) > 0) {
-                nums[i] = 1;
-                countMap.put(1, countMap.get(1) - 1);
+        int left = 0;
+        int right = nums.length - 1;
+        int i = 0;
+        while (i <= right) {
+            if (nums[i] == 0) {
+                swap(nums, left, i);
+                left++;
+                i++;
+            } else if (nums[i] == 2) {
+                swap(nums, right, i);
+                right--;
             } else {
-                nums[i] = 2;
-                countMap.put(2, countMap.get(2) - 1);
+                i++;
             }
         }
+    }
+
+    private static void swap(int[] nums, int i, int j) {
+        int temp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = temp;
     }
 
     private static void printColors(int[] nums) {
