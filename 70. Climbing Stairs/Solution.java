@@ -1,6 +1,3 @@
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * Solution
  *
@@ -10,18 +7,16 @@ import java.util.Map;
 public class Solution {
 
     public static int climbStairs(int n) {
-        Map<Integer, Integer> memo = new HashMap<>();
-        memo.put(1, 1);
-        memo.put(2, 2);
-        return climbStairs(n, memo);
-    }
-
-    private static int climbStairs(int n, Map<Integer, Integer> memo) {
-        if (memo.containsKey(n)) {
-            return memo.get(n);
+        if (n <= 1) {
+            return 1;
         }
-        memo.put(n, climbStairs(n - 1, memo) + climbStairs(n - 2, memo));
-        return memo.get(n);
+        int[] stepsArray = new int[n + 1];
+        stepsArray[1] = 1;
+        stepsArray[2] = 2;
+        for (int i = 3; i <= n; i++) {
+            stepsArray[i] = stepsArray[i - 1] + stepsArray[i - 2];
+        }
+        return stepsArray[n];
     }
 
     public static void main(String[] args) {
