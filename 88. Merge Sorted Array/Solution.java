@@ -9,25 +9,17 @@ import java.util.Arrays;
 public class Solution {
 
     public static void merge(int[] nums1, int m, int[] nums2, int n) {
-        int[] temp = new int[m + n];
-        int i = 0, j = 0, k = 0;
-        while (k < m + n) {
-            if (i >= m) {
-                temp[k] = nums2[j];
-                j++;
-            } else if (j >= n) {
-                temp[k] = nums1[i];
-                i++;
-            } else if (nums1[i] < nums2[j]) {
-                temp[k] = nums1[i];
-                i++;
+        int i = m - 1, j = n - 1, k = m + n - 1;
+        while (i >= 0 && j >= 0) {
+            if (nums1[i] < nums2[j]) {
+                nums1[k--] = nums2[j--];
             } else {
-                temp[k] = nums2[j];
-                j++;
+                nums1[k--] = nums1[i--];
             }
-            k++;
         }
-        System.arraycopy(temp, 0, nums1, 0, temp.length);
+        while (j >= 0) {
+            nums1[k--] = nums2[j--];
+        }
     }
 
     public static void main(String[] args) {
