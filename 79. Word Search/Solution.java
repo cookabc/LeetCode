@@ -21,10 +21,7 @@ public class Solution {
         if (k == word.length()) {
             return true;
         }
-        if (i < 0 || i >= board.length || j < 0 || j >= board[0].length) {
-            return false;
-        }
-        if (board[i][j] != word.charAt(k)) {
+        if (i < 0 || i >= board.length || j < 0 || j >= board[0].length || board[i][j] != word.charAt(k)) {
             return false;
         }
         char temp = board[i][j];
