@@ -1,3 +1,5 @@
+import java.util.stream.IntStream;
+
 /**
  * Solution
  *
@@ -7,14 +9,12 @@
 public class Solution {
 
     public static boolean exist(char[][] board, String word) {
-        for (int m = 0; m < board.length; m++) {
-            for (int n = 0; n < board[0].length; n++) {
-                if (exist(board, word, m, n, 0)) {
-                    return true;
-                }
-            }
-        }
-        return false;
+        return IntStream.range(0, board.length)
+                .anyMatch(
+                        i -> IntStream.range(0, board[0].length).anyMatch(
+                                j -> (board[i][j] == word.charAt(0)) && exist(board, word, i, j, 0)
+                        )
+                );
     }
 
     private static boolean exist(char[][] board, String word, int i, int j, int k) {
