@@ -29,25 +29,21 @@ public class Solution {
         }
     }
 
-    private static Integer prev;
-
     public static boolean isValidBST(TreeNode root) {
-        prev = null;
-        return inorder(root);
+        return validate(root, null, null);
     }
 
-    private static boolean inorder(TreeNode root) {
+    public static boolean validate(TreeNode root, Integer low, Integer high) {
+        // Empty trees are valid BSTs.
         if (root == null) {
             return true;
         }
-        if (!inorder(root.left)) {
+        // The current node's value must be between low and high.
+        if ((low != null && root.val <= low) || (high != null && root.val >= high)) {
             return false;
         }
-        if (prev != null && root.val <= prev) {
-            return false;
-        }
-        prev = root.val;
-        return inorder(root.right);
+        // The left and right subtree must also be valid.
+        return validate(root.right, root.val, high) && validate(root.left, low, root.val);
     }
 
     public static void main(String[] args) {
