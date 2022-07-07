@@ -1,4 +1,7 @@
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
 
 /**
  * Solution
@@ -29,22 +32,19 @@ public class Solution {
 
     public static List<Integer> inorderTraversal(TreeNode root) {
         List<Integer> result = new ArrayList<>();
-        Stack<TreeNode> stack = new Stack<>();
-        TreeNode curr = root;
-        while (curr != null || !stack.isEmpty()) {
-            while (curr != null) {
-                stack.push(curr);
-                curr = curr.left;
-            }
-            curr = stack.pop();
-            result.add(curr.val);
-            curr = curr.right;
-        }
+        inorderTraversal(root, result);
         return result;
     }
 
+    private static void inorderTraversal(TreeNode root, List<Integer> result) {
+        if (root != null) {
+            inorderTraversal(root.left, result);
+            result.add(root.val);
+            inorderTraversal(root.right, result);
+        }
+    }
+
     public static void main(String[] args) {
-        System.out.println(inorderTraversal(convert(Arrays.asList(0, 1, 2, 3, 4, 5))));
         System.out.println(inorderTraversal(convert(Arrays.asList(null, 1, 2, 3))));
         System.out.println(inorderTraversal(convert(Arrays.asList(1, null, 2, 3))));
         System.out.println(inorderTraversal(convert(Arrays.asList(1, 2, null, 3))));
