@@ -3,7 +3,7 @@ import java.util.stream.IntStream;
 /**
  * Solution
  *
- * @author xugang.song
+ * @author chuangcius
  * @date 2022.07.06
  */
 public class Solution {
