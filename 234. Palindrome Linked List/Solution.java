@@ -1,4 +1,3 @@
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -47,7 +46,7 @@ public class Solution {
         return true;
     }
 
-    private ListNode static reverse(ListNode head) {
+    private static ListNode reverse(ListNode head) {
         ListNode prev = null;
         ListNode curr = head;
 
